@@ -31,7 +31,11 @@ public class CallbackConsumer {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/callback-consumer.xml"});
         context.start();
         CallbackService callbackService = (CallbackService) context.getBean("callbackService");
-        callbackService.addListener("foo.bar", msg -> System.out.println("callback1:" + msg));
+
+        //callbackService.addListener("foo.bar", msg -> System.out.println("callback1:" + msg));
+
+        callbackService.addListener2("foo.bar2", msg -> System.out.println("callback2:" + msg));
+
         System.in.read();
     }
 

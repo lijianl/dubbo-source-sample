@@ -37,6 +37,7 @@
     <bean id="demoService" class="org.apache.dubbo.samples.stub.impl.DemoServiceImpl"/>
 
     <!-- declare the service interface to be exported -->
-    <dubbo:service interface="org.apache.dubbo.samples.stub.api.DemoService" ref="demoService"/>
+    <dubbo:service interface="org.apache.dubbo.samples.stub.api.DemoService"
+                   ref="demoService"/>
 
 </beans>

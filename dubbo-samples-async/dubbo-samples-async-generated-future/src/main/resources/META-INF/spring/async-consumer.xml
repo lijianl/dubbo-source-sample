@@ -28,5 +28,6 @@
 
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
-    <dubbo:reference id="greetingsService" interface="org.apache.dubbo.samples.api.client.GreetingService"/>
+    <!--尼玛-->
+    <dubbo:reference id="greetingService" interface="org.apache.dubbo.samples.governance.api.GreetingService"/>
 </beans>

@@ -30,7 +30,11 @@ public class MockConsumer {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/mock-consumer.xml");
         context.start();
         DemoService demoService = context.getBean("demoService", DemoService.class);
+
+        // 抛出异常/调用失败,则使用mock服务处理异常
         String hello = demoService.sayHello("world");
+
+        // 返回mock数据
         logger.info("result: " + hello);
     }
 }

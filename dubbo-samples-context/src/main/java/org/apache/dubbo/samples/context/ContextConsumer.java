@@ -25,17 +25,28 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ContextConsumer {
 
     public static void main(String[] args) {
+
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/dubbo-context-consumer.xml"});
         context.start();
-        ContextService contextService = (ContextService) context.getBean("demoService"); // get remote service proxy
 
-        String hello = contextService.sayHello("world"); // call remote method
+        // get remote service proxy
+        ContextService contextService = (ContextService) context.getBean("demoService");
+
+        // call remote method
+        String hello = contextService.sayHello("world");
+
+        // get result
+        System.out.println(hello);
 
         boolean isConsumerSide = RpcContext.getContext().isConsumerSide();
         String application = RpcContext.getContext().getUrl().getParameter("application");
         String serverIP = RpcContext.getContext().getRemoteHost();
 
-        System.out.println(hello); // get result
+
+        // 当前线程是：Spring-context的某个线程
+        // Thread-0  INFO support.ClassPathXmlApplicationContext: Closing org.springframework.context.support.ClassPathXmlApplicationContext@73a28541: startup date [Thu Apr 25 15:43:19 CST 2019]; root of context hierarchy
+        System.out.printf("consumer:isConsumerSide:%s,application=%s,serverIP=%s", isConsumerSide, application, serverIP);
+
 
     }
 }

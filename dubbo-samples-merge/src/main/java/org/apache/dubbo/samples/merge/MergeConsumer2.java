@@ -36,6 +36,8 @@ public class MergeConsumer2 {
         MergeService mergeService = (MergeService) context.getBean("mergeService");
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             try {
+
+                // 自己实现去重; 应该可以更好的增加自己的merge策略
                 List<String> result = mergeService.mergeResult();
                 System.out.println("(" + i + ") " + result);
                 Thread.sleep(1000);

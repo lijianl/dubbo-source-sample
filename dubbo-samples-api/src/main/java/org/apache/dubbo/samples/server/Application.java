@@ -27,13 +27,26 @@ import java.io.IOException;
 
 public class Application {
     public static void main(String[] args) throws IOException {
+
         System.setProperty("java.net.preferIPv4Stack", "true");
+
+
+        new EmbeddedZooKeeper(2181, true).start();
+
         ServiceConfig<GreetingsService> service = new ServiceConfig<>();
         service.setApplication(new ApplicationConfig("first-dubbo-provider"));
-        service.setRegistry(new RegistryConfig("multicast://224.5.6.7:1234"));
+
+
+        RegistryConfig registryConfig = new RegistryConfig();
+        registryConfig.setAddress("zookeeper://127.0.0.1:2181");
+        registryConfig.setRegister(true);
+        service.setRegistry(registryConfig);
+
         service.setInterface(GreetingsService.class);
         service.setRef(new GreetingsServiceImpl());
         service.export();
+
+
         System.out.println("first-dubbo-provider is running.");
         System.in.read();
     }

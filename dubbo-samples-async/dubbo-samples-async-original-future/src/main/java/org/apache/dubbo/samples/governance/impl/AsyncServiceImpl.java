@@ -29,13 +29,22 @@ import java.util.concurrent.CompletableFuture;
  */
 public class AsyncServiceImpl implements AsyncService {
 
+
+    // 异步执行的实现
     @Override
     public CompletableFuture<String> sayHello(String name) {
+
+        // context??
         RpcContext savedContext = RpcContext.getContext();
+        // serverContext??
         RpcContext savedServerContext = RpcContext.getServerContext();
+
+        // 异步执行
         return CompletableFuture.supplyAsync(() -> {
+
             System.out.println(savedContext.getAttachment("consumer-key1"));
             savedServerContext.setAttachment("server-key1", "server-value1");
+
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
@@ -45,4 +54,13 @@ public class AsyncServiceImpl implements AsyncService {
         });
     }
 
+    @Override
+    public String sayHi(String name) {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "sync sayHi from provider.";
+    }
 }

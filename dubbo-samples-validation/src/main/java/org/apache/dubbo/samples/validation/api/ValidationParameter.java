@@ -22,13 +22,16 @@ package org.apache.dubbo.samples.validation.api;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Future;
+
+import javax.validation.constraints.Size;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
 
 /**
  * ValidationParameter
@@ -41,7 +44,8 @@ public class ValidationParameter implements Serializable {
     @Size(min = 2, max = 20) // min and max
     private String name;
 
-    @NotNull(groups = ValidationService.Save.class) // disallow null when save, but allow null when update, that is: not update
+    @NotNull(groups = ValidationService.Save.class)
+    // disallow null when save, but allow null when update, that is: not update
     @Pattern(regexp = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$")
     private String email;
 

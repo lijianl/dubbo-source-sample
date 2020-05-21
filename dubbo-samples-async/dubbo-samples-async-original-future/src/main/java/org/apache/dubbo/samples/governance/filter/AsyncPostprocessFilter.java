@@ -29,11 +29,18 @@ import org.apache.dubbo.rpc.RpcException;
  */
 @Activate(group = {Constants.PROVIDER, Constants.CONSUMER})
 public class AsyncPostprocessFilter implements Filter {
+
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        return invoker.invoke(invocation);
+        System.out.println("AsyncPostprocessFilter: invoke method => " + invocation.getMethodName());
+        Result res = invoker.invoke(invocation);
+        System.out.println("AsyncPostprocessFilter: res => " + res.getValue());
+        return res;
     }
 
+
+    // 这个设计类似netty的设计原理
+    // 返回是调用
     @Override
     public Result onResponse(Result result, Invoker<?> invoker, Invocation invocation) {
         System.out.println("AsyncPostprocessFilter: Filter get the return value: " + result.getValue());

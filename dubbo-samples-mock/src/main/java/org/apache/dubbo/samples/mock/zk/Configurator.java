@@ -22,6 +22,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import static org.apache.curator.framework.CuratorFrameworkFactory.newClient;
 
 public class Configurator {
+
     private static CuratorFramework client;
 
     public static void main(String[] args) {

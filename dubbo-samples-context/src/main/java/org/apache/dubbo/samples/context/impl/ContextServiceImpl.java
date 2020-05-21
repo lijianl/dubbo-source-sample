@@ -21,15 +21,22 @@ import org.apache.dubbo.samples.context.api.ContextService;
 
 import com.alibaba.dubbo.rpc.RpcContext;
 
-public class ContextServiceImpl implements ContextService{
+public class ContextServiceImpl implements ContextService {
 
     @Override
     public String sayHello(String name) {
 
         boolean isProviderSide = RpcContext.getContext().isProviderSide();
+
         String clientIP = RpcContext.getContext().getRemoteHost();
+
         String application = RpcContext.getContext().getUrl().getParameter("application");
 
+        System.out.printf("provider:isProviderSide:%s,application=%s,clientIP=%s", isProviderSide, application, clientIP);
+
+        // sessionId 应该是zk的invoke调用的链接
+        // 没有调适找到IO线程/业务处理的线程
+        // ProcessThread(sid:0 cport:2181):  INFO server.PrepRequestProcessor: Processed session termination for sessionid: 0x10000b95d0b0003
         return "Hello " + name + ", response from provider: " + RpcContext.getContext().getLocalAddress();
     }
 }

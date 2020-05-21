@@ -17,7 +17,13 @@
 
 package org.apache.dubbo.samples.api;
 
+import java.util.List;
+
 public interface GreetingsService {
 
     String sayHi(String name);
+
+    Person getPerson(Person person);
+
+    List<Person> listPersson(List<Person> people);
 }

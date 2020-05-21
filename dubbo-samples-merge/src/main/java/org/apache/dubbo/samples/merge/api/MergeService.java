@@ -27,5 +27,4 @@ import java.util.List;
 public interface MergeService {
 
     List<String> mergeResult();
-
 }

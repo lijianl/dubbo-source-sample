@@ -17,25 +17,31 @@
  *
  */
 
-package org.apache.dubbo.samples.notify.impl;
+package org.apache.dubbo.samples.governance.api;
 
-import org.apache.dubbo.samples.notify.api.Notify;
+import java.util.concurrent.CompletableFuture;
 
-import java.util.HashMap;
-import java.util.Map;
+public interface GreetingService {
 
-public class NotifyImpl implements Notify {
 
-    public Map<Integer, String> ret = new HashMap<Integer, String>();
+    // 底层依然同步的调用
+    // 同步的调用方法
+    String greeting(String name);
 
-    @Override
-    public void onreturn(String name, int id) {
-        ret.put(id, name);
-        System.out.println("onreturn: " + name);
+    default String replyGreeting(String name) {
+        return "Fine, " + name;
     }
 
-    @Override
-    public void onthrow(Throwable ex, String name, int id) {
-        System.out.println("onthrow: " + name);
+    // 使用CompletableFuture封装同步调用，dubbo调用本身还是同步,只是不等待结果返回
+    // 使用的是函数接口, 这是很巧妙的实现方法
+    default CompletableFuture<String> greeting(String name, byte signal) {
+        return CompletableFuture.completedFuture(greeting(name));
     }
+
+    // 还是喜欢这样定义; dubbo很强大
+    // AsyncSignal 不是实体的类
+    default CompletableFuture<String> asyncGreeting(String name) {
+        return CompletableFuture.completedFuture(greeting(name));
+    }
+
 }

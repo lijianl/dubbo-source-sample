@@ -25,17 +25,22 @@ import org.apache.dubbo.rpc.Result;
 import org.apache.dubbo.rpc.RpcException;
 
 /**
- *
+ * 启动是自动加载
  */
 @Activate(group = {Constants.PROVIDER, Constants.CONSUMER})
 public class LegacyBlockFilter implements Filter {
+
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
-        Result result =  invoker.invoke(invocation);
+        // 业务执行
+        Result result = invoker.invoke(invocation);
+        // 结果判断，此处异步的执行不会立即返回结果
+        // 如果是异步的调用.本质还是同步的..此处会返回结果
         System.out.println("LegacyBlockFilter: This is the default return value: " + result.getValue());
         if (result.hasException()) {
             System.out.println("LegacyBlockFilter: This will only happen when the real exception returns: " + result.getException());
         }
+        //
         System.out.println("LegacyBlockFilter: This msg should not be blocked.");
         return result;
     }

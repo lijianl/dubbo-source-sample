@@ -35,24 +35,35 @@ public class AsyncConsumer {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/async-consumer.xml"});
         context.start();
 
-        final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
 
+        AsyncService asyncService = (AsyncService) context.getBean("asyncService");
+        // RpcContext 必须配合 xml 配置async = true
         asyncService.sayHello("world");
+        // ...
         CompletableFuture<String> helloFuture = RpcContext.getContext().getCompletableFuture();
         helloFuture.whenComplete((retValue, exception) -> {
             if (exception == null) {
+                System.out.println("async consumer >>> ");
                 System.out.println(retValue);
             } else {
                 exception.printStackTrace();
             }
         });
 
-        CompletableFuture<String> f = RpcContext.getContext().asyncCall(() -> asyncService.sayHello("async call request"));
+        // 异步调用有返回值
+        CompletableFuture<String> f = RpcContext.getContext().asyncCall(
+                () -> {
+                    System.out.println("async consumer ...");
+                    return asyncService.sayHello("async call request");
+                }
+        );
 
         System.out.println("async call ret :" + f.get());
 
 
+        // 异步调用; 不需要返回值
         RpcContext.getContext().asyncCall(() -> {
+            System.out.println("one way consumer ...");
             asyncService.sayHello("oneway call request1");
         });
 

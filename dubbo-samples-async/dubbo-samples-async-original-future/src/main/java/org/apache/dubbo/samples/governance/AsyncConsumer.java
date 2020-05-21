@@ -35,11 +35,12 @@ public class AsyncConsumer {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/async-consumer.xml"});
         context.start();
 
-        final AsyncService asyncService = (AsyncService) context.getBean("asyncService");
+        AsyncService asyncService = (AsyncService) context.getBean("asyncService");
 
         RpcContext.getContext().setAttachment("consumer-key1", "consumer-value1");
         CompletableFuture<String> future = asyncService.sayHello("async call request");
         RpcContext savedServerContext = RpcContext.getServerContext();
+
         future.whenComplete((v, t) -> {
             System.out.println(savedServerContext.getAttachment("server-key1"));
             if (t != null) {
@@ -49,6 +50,11 @@ public class AsyncConsumer {
             }
         });
         System.out.println("AsyncConsumer: Executed before response return.");
+
+        CompletableFuture<String> future1 = asyncService.asyncSayHi("xixi");
+        future1.whenComplete((r, e) -> {
+            System.out.println("async conusmer " + r);
+        });
 
         System.in.read();
     }

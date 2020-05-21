@@ -34,6 +34,8 @@ public class MergeServiceImpl3 implements MergeService {
         List<String> menus = new ArrayList<String>();
         menus.add("group-3.1");
         menus.add("group-3.2");
+        menus.add("group-2.1");
+        menus.add("group-2.2");
         return menus;
     }
 

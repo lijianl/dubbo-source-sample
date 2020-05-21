@@ -26,6 +26,17 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface AsyncService {
 
+    // 异步的执行
+    // 理解区分异步调用 和 异步执行
+    // 此处直接定义的异步执行的接口
     CompletableFuture<String> sayHello(String name);
+
+    String sayHi(String name);
+
+
+    // 异步的调用
+    default CompletableFuture<String> asyncSayHi(String name) {
+        return CompletableFuture.completedFuture(sayHi(name));
+    }
 
 }

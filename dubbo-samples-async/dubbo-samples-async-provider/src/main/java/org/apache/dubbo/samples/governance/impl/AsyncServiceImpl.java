@@ -31,20 +31,32 @@ public class AsyncServiceImpl implements AsyncService {
     @Override
     public String sayHello(String name) {
         System.out.println("Main sayHello() method start.");
+
+        //  异步context
         final AsyncContext asyncContext = RpcContext.startAsync();
+
         new Thread(() -> {
+
+
+            // 如果要使用上下文，则必须要放在第一句执行
             asyncContext.signalContextSwitch();
+
             System.out.println("Attachment from consumer: " + RpcContext.getContext().getAttachment("consumer-key1"));
             System.out.println("    -- Async start.");
             try {
-                Thread.sleep(5000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            // 真正的返回
             asyncContext.write("Hello " + name + ", response from provider.");
+
             System.out.println("    -- Async end.");
         }).start();
+
         System.out.println("Main sayHello() method end.");
+
+        // 这个没有返回
         return "hello, " + name;
     }
 

@@ -26,7 +26,11 @@
 
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 
-    <dubbo:reference id="validationService" interface="org.apache.dubbo.samples.validation.api.ValidationService"
-                     validation="true"/>
+    <!--最好通过配置启动校验-->
+    <!--应该是dubbo内部捕捉了异常-->
+    <dubbo:reference id="validationService"
+                     interface="org.apache.dubbo.samples.validation.api.ValidationService"
+                     validation="true"
+    />
 
 </beans>

@@ -18,10 +18,24 @@
 package org.apache.dubbo.samples.server;
 
 import org.apache.dubbo.samples.api.GreetingsService;
+import org.apache.dubbo.samples.api.Person;
+
+import java.util.List;
 
 public class GreetingsServiceImpl implements GreetingsService {
     @Override
     public String sayHi(String name) {
         return "hi, " + name;
+    }
+
+    @Override
+    public Person getPerson(Person person) {
+        System.out.println(person.toString());
+        return person;
+    }
+
+    @Override
+    public List<Person> listPersson(List<Person> people) {
+        return people;
     }
 }

@@ -30,14 +30,18 @@ public class AttachmentConsumer {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"META-INF/spring/attachment-consumer.xml"});
         context.start();
+
+
         AttachmentService attachmentService = (AttachmentService) context.getBean("demoService"); // get remote service proxy
 
+        // 只有一次有效
         RpcContext.getContext().setAttachment("index", "1");
         String hello = attachmentService.sayHello("world");
         System.out.println(hello); // get result
 
-
-        hello = attachmentService.sayHello("world"); //attachment only affective once
+        // attachment only affective once
+        // 应该是用一个线程: 只一次有效是怎么实现的???
+        hello = attachmentService.sayHello("world");
         System.out.println(hello); // get result
     }
 }

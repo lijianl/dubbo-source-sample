@@ -19,7 +19,8 @@
 
 package org.apache.dubbo.samples.governance.impl;
 
-import org.apache.dubbo.samples.api.client.GreetingService;
+
+import org.apache.dubbo.samples.governance.api.GreetingService;
 
 /**
  * AsyncServiceImpl
@@ -28,13 +29,14 @@ public class GreetingsServiceImpl implements GreetingService {
 
     @Override
     public String greeting(String name) {
+
         System.out.println("provider received: " + name);
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("provider returned.");
+        System.out.println("provider returned. tid = " + Thread.currentThread().getId());
         return "hello, " + name;
     }
 

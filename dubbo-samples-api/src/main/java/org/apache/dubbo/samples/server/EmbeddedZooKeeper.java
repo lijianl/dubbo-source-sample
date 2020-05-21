@@ -13,33 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.dubbo.samples.merge;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Properties;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+package org.apache.dubbo.samples.server;
 
 import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.ErrorHandler;
 import org.springframework.util.SocketUtils;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Properties;
+import java.util.UUID;
+
 /**
  * from: https://github.com/spring-projects/spring-xd/blob/v1.3.1.RELEASE/spring-xd-dirt/src/main/java/org/springframework/xd/dirt/zookeeper/ZooKeeperUtils.java
- * <p>
+ *
  * Helper class to start an embedded instance of standalone (non clustered) ZooKeeper.
- * <p>
- * <p>
+ *
  * NOTE: at least an external standalone server (if not an ensemble) are recommended, even for
  * {@link org.springframework.xd.dirt.server.singlenode.SingleNodeApplication}
  *
@@ -47,9 +41,6 @@ import org.springframework.util.SocketUtils;
  * @author Mark Fisher
  * @author David Turanski
  */
-
-
-// SmartLifecycle 应该是管理生命周期的接口
 public class EmbeddedZooKeeper implements SmartLifecycle {
 
     /**
@@ -69,7 +60,6 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
 
     /**
      * Lifecycle phase. Default is 0.
-     * 生命周期....
      */
     private int phase = 0;
 
@@ -94,14 +84,13 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
      * Construct an EmbeddedZooKeeper with a random port.
      */
     public EmbeddedZooKeeper() {
-        // 1024 - 65535
         clientPort = SocketUtils.findAvailableTcpPort();
     }
 
     /**
      * Construct an EmbeddedZooKeeper with the provided port.
      *
-     * @param clientPort port for ZooKeeper server to bind to
+     * @param clientPort  port for ZooKeeper server to bind to
      */
     public EmbeddedZooKeeper(int clientPort, boolean daemon) {
         this.clientPort = clientPort;
@@ -168,7 +157,6 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
     @Override
     public synchronized void start() {
         if (zkServerThread == null) {
-            // 简单
             zkServerThread = new Thread(new ServerRunnable(), "ZooKeeper Server Starter");
             zkServerThread.setDaemon(daemon);
             zkServerThread.start();
@@ -185,14 +173,12 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
             // This will log an exception on shutdown; see
             // https://issues.apache.org/jira/browse/ZOOKEEPER-1873 for details.
             try {
-                // 调用protected的方法
-                // 使用发射
                 Method shutdown = ZooKeeperServerMain.class.getDeclaredMethod("shutdown");
-                // private / protected
                 shutdown.setAccessible(true);
                 shutdown.invoke(zkServer);
+            }
 
-            } catch (Exception e) {
+            catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
@@ -200,10 +186,10 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
             // the server is shutdown; this will block until
             // the shutdown is complete.
             try {
-                // 等待zkServer关闭,这里的等待不是绝对的等待
                 zkServerThread.join(5000);
                 zkServerThread = null;
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 logger.warn("Interrupted while waiting for embedded ZooKeeper to exit");
                 // abandoning zk thread
@@ -218,7 +204,6 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
     @Override
     public void stop(Runnable callback) {
         stop();
-        // 回调
         callback.run();
     }
 
@@ -240,45 +225,31 @@ public class EmbeddedZooKeeper implements SmartLifecycle {
         @Override
         public void run() {
             try {
-
-                //
                 Properties properties = new Properties();
-                File file = new File(System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID());
-                logger.info("start=>{}", file.getAbsolutePath());
+                File file = new File(System.getProperty("java.io.tmpdir")
+                    + File.separator + UUID.randomUUID());
                 file.deleteOnExit();
-
                 properties.setProperty("dataDir", file.getAbsolutePath());
                 properties.setProperty("clientPort", String.valueOf(clientPort));
 
-                // 配置属性
                 QuorumPeerConfig quorumPeerConfig = new QuorumPeerConfig();
                 quorumPeerConfig.parseProperties(properties);
 
                 zkServer = new ZooKeeperServerMain();
                 ServerConfig configuration = new ServerConfig();
                 configuration.readFrom(quorumPeerConfig);
-                zkServer.runFromConfig(configuration);
 
-            } catch (Exception e) {
+                zkServer.runFromConfig(configuration);
+            }
+            catch (Exception e) {
                 if (errorHandler != null) {
                     errorHandler.handleError(e);
-                } else {
+                }
+                else {
                     logger.error("Exception running embedded ZooKeeper", e);
                 }
             }
         }
-    }
-
-
-    /**
-     * 最好可以提供命令好的工具,便于查看zk存储的数据结构
-     *
-     * @param args
-     */
-    public static void main(String[] args) throws IOException {
-        EmbeddedZooKeeper zk = new EmbeddedZooKeeper(2181, true);
-        zk.start();
-        System.in.read();
     }
 
 }

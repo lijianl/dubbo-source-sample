@@ -32,12 +32,16 @@ import org.apache.dubbo.samples.callback.api.CallbackService;
  */
 public class CallbackServiceImpl implements CallbackService {
 
+    // final
     private final Map<String, CallbackListener> listeners = new ConcurrentHashMap<String, CallbackListener>();
 
     public CallbackServiceImpl() {
+        // daemon
         Thread t = new Thread(() -> {
             while (true) {
                 try {
+
+                    // 调用所有的callback
                     for (Map.Entry<String, CallbackListener> entry : listeners.entrySet()) {
                         try {
                             entry.getValue().changed(getChanged(entry.getKey()));
@@ -65,4 +69,14 @@ public class CallbackServiceImpl implements CallbackService {
         return "Changed: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
+
+    /**
+     * 回调接口的方法必须单独配置,因为需要注意接口参数序列化的问题
+     * <p>
+     * 这个功能不是很好
+     */
+    @Override
+    public void addListener2(String key, CallbackListener listener) {
+        listener.changed(key);
+    }
 }

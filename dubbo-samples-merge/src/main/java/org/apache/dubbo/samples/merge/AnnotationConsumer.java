@@ -43,7 +43,8 @@ import static com.alibaba.dubbo.common.Constants.TAG_KEY;
 public class AnnotationConsumer {
 
     public static void main(String[] args) throws Exception {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConsumerConfiguration.class);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(ConsumerConfiguration.class);
         context.start();
         MergeService mergeService = (MergeService) context.getBean("mergeService");
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
@@ -58,15 +59,19 @@ public class AnnotationConsumer {
         }
     }
 
+
+    // 内部类; xml 注解
     @Configuration
     @ImportResource("spring/merge-consumer2.xml")
     static public class ConsumerConfiguration {
+
+        // 这个是干嘛用的?
         @Bean
         public ApplicationConfig applicationConfig() {
             ApplicationConfig applicationConfig = new ApplicationConfig();
             applicationConfig.setName("consumer-book6");
             applicationConfig.setQosEnable(false);
-            Map<String,String> parameters = new HashMap<>();
+            Map<String, String> parameters = new HashMap<>();
             parameters.put(Constants.ROUTER_KEY, "tag");
             applicationConfig.setParameters(parameters);
             return applicationConfig;

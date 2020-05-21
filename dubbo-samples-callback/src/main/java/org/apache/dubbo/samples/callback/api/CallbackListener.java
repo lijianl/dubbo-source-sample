@@ -25,5 +25,4 @@ package org.apache.dubbo.samples.callback.api;
 public interface CallbackListener {
 
     void changed(String msg);
-
 }

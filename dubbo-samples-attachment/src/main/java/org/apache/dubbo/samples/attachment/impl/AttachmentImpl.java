@@ -19,6 +19,7 @@
 
 package org.apache.dubbo.samples.attachment.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.dubbo.rpc.RpcContext;
 import org.apache.dubbo.samples.attachment.api.AttachmentService;
 
@@ -30,11 +31,20 @@ public class AttachmentImpl implements AttachmentService {
 
     public String sayHello(String name) {
 
+        RpcContext context = RpcContext.getContext();
         String index = RpcContext.getContext().getAttachment("index");  //the attachment will be remove after this
+
         System.out.println("receive attachment index: " + index);
+        System.out.println("receive attachment request: " + context.getRequest());
+        System.out.println("receive attachment thread: " + Thread.currentThread().getId());
+
+
+        System.out.println("receive attachment constext: " + JSONObject.toJSONString(context));
+        System.out.println("receive attachment clientIP: " + context.getRemoteHost());
+
 
         System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name + ", request from consumer: " + RpcContext
-            .getContext().getRemoteAddress());
+                .getContext().getRemoteAddress());
         return "Hello " + name + ", response from provider: " + RpcContext.getContext().getLocalAddress();
     }
 }

@@ -57,6 +57,9 @@ public class ValidationConsumer {
             validationService.save(parameter);
             System.err.println("Validation Save ERROR");
         } catch (Exception e) {
+
+            e.printStackTrace();
+
             ConstraintViolationException ve = (ConstraintViolationException) e;
             Set<ConstraintViolation<?>> violations = ve.getConstraintViolations();
             System.out.println(violations);

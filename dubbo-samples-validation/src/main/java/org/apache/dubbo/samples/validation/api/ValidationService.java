@@ -19,10 +19,11 @@
 
 package org.apache.dubbo.samples.validation.api;
 
+import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
 
 /**
  * ValidationService
@@ -41,15 +42,18 @@ public interface ValidationService {
      * annotation which has the same name with the method but has the first letter in capital
      * used for distinguish validation scenario, for example: @NotNull(groups = ValidationService.Save.class)
      * optional
+     * 定义不同的场景 = save()场景
      */
-    @interface Save {
-    }
+    @interface Save { }
 
     /**
      * annotation which has the same name with the method but has the first letter in capital
      * used for distinguish validation scenario, for example: @NotNull(groups = ValidationService.Update.class)
      * optional
+     *
+     * update场景
+     *
+     * groups属性
      */
-    @interface Update {
-    }
+    @interface Update { }
 }

@@ -27,11 +27,15 @@ public class LocalDemo {
 
     public static void main(String[] args) {
         new EmbeddedZooKeeper(2181, true).start();
+
+        // 既然是本地调用.....为什么还需要注册中心....
+        // 这里的设计应该注意下,根据日志，还是向zk 注册了jvm的信息
+        // 设计上应该存在缺点...没有动态的装配
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/dubbo-demo.xml"});
         context.start();
 
         DemoService demoService = context.getBean("demoService", DemoService.class);
         String hello = demoService.sayHello("world");
-        System.out.println(hello);
+        System.out.println("LocalDemo  " + hello);
     }
 }

@@ -23,11 +23,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+// java.lang.ClassNotFoundException: org.apache.dubbo.samples.stub.api.DemoServiceStub
+// Stub的类必须是指定name格式的，根据ApiStub的名字的方式加载
+// 记载是通过反射加载, 感觉应用的场景不大
 public class DemoServiceStub implements DemoService {
+
     private static Logger logger = LoggerFactory.getLogger(DemoServiceStub.class);
 
     private final DemoService demoService;
 
+    // 代理
     public DemoServiceStub(DemoService demoService) {
         this.demoService = demoService;
     }

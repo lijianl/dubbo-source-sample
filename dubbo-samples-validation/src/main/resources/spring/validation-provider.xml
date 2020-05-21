@@ -28,9 +28,12 @@
 
     <dubbo:protocol name="dubbo" port="20880"/>
 
-    <bean id="validationService" class="org.apache.dubbo.samples.validation.impl.ValidationServiceImpl"/>
+    <bean id="validationService"
+          class="org.apache.dubbo.samples.validation.impl.ValidationServiceImpl"/>
 
-    <dubbo:service interface="org.apache.dubbo.samples.validation.api.ValidationService" ref="validationService"
-                   validation="true"/>
+
+    <!-- 应该没有必要增加dubbo配置-->
+    <dubbo:service interface="org.apache.dubbo.samples.validation.api.ValidationService"
+                   ref="validationService"/>
 
 </beans>

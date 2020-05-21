@@ -20,11 +20,17 @@ package org.apache.dubbo.samples.mock.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// Stub 的子集,不需要构造函数
+// 服务降级，比Stub有用的多
 public class DemoServiceMock implements DemoService {
+
     private static Logger logger = LoggerFactory.getLogger(DemoServiceMock.class);
 
+    // 使用mock 容错
+    @Override
     public String sayHello(String name) {
         logger.warn("about to execute mock: " + DemoServiceMock.class.getSimpleName());
+        // 伪造的数据
         return "mock " + name;
     }
 }

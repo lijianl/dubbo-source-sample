@@ -33,9 +33,19 @@
 
     <!-- generate proxy for the remote service, then demoService can be used in the same way as the
     local regular interface -->
-    <bean id="demoCallback" class="org.apache.dubbo.samples.notify.impl.NotifyImpl" />
-    <dubbo:reference id="demoService" check="false" interface="org.apache.dubbo.samples.notify.api.DemoService" version="1.0.0" group="cn">
-        <dubbo:method name="sayHello" async="true" onreturn="demoCallback.onreturn" onthrow="demoCallback.onthrow"/>
+
+    <!--尼玛,调用的本地的服务; 感觉这些设计没有什么意义； 应用场景太少-->
+    <bean id="demoCallback" class="org.apache.dubbo.samples.notify.impl.NotifyImpl"/>
+
+    <dubbo:reference id="demoService"
+                     check="false"
+                     interface="org.apache.dubbo.samples.notify.api.DemoService"
+                     version="1.0.0"
+                     group="cn">
+        <dubbo:method name="sayHello"
+                      async="true"
+                      onreturn="demoCallback.onreturn"
+                      onthrow="demoCallback.onthrow"/>
     </dubbo:reference>
 
 

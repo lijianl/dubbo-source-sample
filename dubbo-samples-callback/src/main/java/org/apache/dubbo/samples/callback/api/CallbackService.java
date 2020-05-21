@@ -24,6 +24,9 @@ package org.apache.dubbo.samples.callback.api;
  */
 public interface CallbackService {
 
+
+    // 回调客户端的逻辑
     void addListener(String key, CallbackListener listener);
 
+    void addListener2(String key, CallbackListener listener);
 }

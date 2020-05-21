@@ -31,8 +31,10 @@
 
     <bean id="callbackService" class="org.apache.dubbo.samples.callback.impl.CallbackServiceImpl"/>
 
-    <dubbo:service interface="org.apache.dubbo.samples.callback.api.CallbackService" ref="callbackService"
-                   connections="1" callbacks="1000">
+    <dubbo:service interface="org.apache.dubbo.samples.callback.api.CallbackService"
+                   ref="callbackService"
+                   connections="1"
+                   callbacks="1000">
         <dubbo:method name="addListener">
             <dubbo:argument index="1" callback="true"/>
             <!--<dubbo:argument type="com.demo.CallbackListener" callback="true" />-->

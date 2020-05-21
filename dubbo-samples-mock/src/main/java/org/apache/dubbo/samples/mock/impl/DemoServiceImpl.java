@@ -21,6 +21,9 @@ import org.apache.dubbo.samples.mock.api.DemoService;
 
 public class DemoServiceImpl implements DemoService {
 
+
+    // privider使用try-catch捕捉异常
+    @Override
     public String sayHello(String name) {
         try {
             // sleeping 5 seconds leads to TimeoutException on client side, and mock impl will be invoked

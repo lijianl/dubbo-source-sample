@@ -32,8 +32,13 @@ public class EchoConsumer {
         context.start();
         DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
 
+
+        // echo 服务
+        // 居然是强制类型转换.....
+        // 这个可能是通过Duddo-SPI的Wrapper实现的
         EchoService echoService = (EchoService) demoService;
-        String status = (String)echoService.$echo("OK");
+        String status = (String) echoService.$echo("OK");
+        // OK
         System.out.println("echo result: " + status);
     }
 }
